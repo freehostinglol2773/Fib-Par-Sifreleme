@@ -3,124 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Şifreleme Aracı</title>
+    <title>Şifreleme ve Deşifreleme Aracı</title>
     <style>
-        /* CSS Kodları */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 50px;
-            background-color: #f4f4f9;
-            color: #333;
+        body { 
+            font-family: Arial; 
+            margin: 50px; 
+            background: #f4f4f9; 
         }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .container { 
+            max-width: 600px; 
+            margin: auto; 
+            padding: 20px; 
+            background: white; 
+            border-radius: 8px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
         }
-        h1 {
-            text-align: center;
-            color: #4CAF50;
+        h1 { 
+            text-align: center; 
+            color: #4CAF50; 
         }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 16px;
+        textarea, input { 
+            width: 100%; 
+            padding: 10px; 
+            margin-bottom: 20px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            font-size: 16px; 
         }
-        button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
+        button { 
+            width: 100%; 
+            padding: 10px; 
+            background: #4CAF50; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
         }
-        button:hover {
-            background-color: #45a049;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e9f7ef;
-            border: 1px solid #4CAF50;
-            border-radius: 4px;
-            font-size: 18px;
-            color: #333;
+        .result { 
+            margin-top: 20px; 
+            padding: 10px; 
+            background: #e9f7ef; 
+            border: 1px solid #4CAF50; 
+            border-radius: 4px; 
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Şifreleme Aracı</h1>
+        <h1>Şifreleme ve Deşifreleme Aracı</h1>
+
+        <!-- Şifreleme Bölümü -->
+        <h2>Şifreleme</h2>
         <textarea id="inputText" placeholder="Şifrelenecek metni buraya yazın..."></textarea>
         <button onclick="sifrele()">Şifrele</button>
-        <div class="result" id="result"></div>
-    </div>
+        <div class="result" id="encryptedResult"></div>
+        <div class="result" id="keyResult"></div>
 
+        <!-- Deşifreleme Bölümü -->
+        <h2>Deşifreleme</h2>
+        <input type="text" id="encryptedInput" placeholder="Şifrelenmiş metni buraya yazın...">
+        <input type="text" id="keyInput" placeholder="Bölüm anahtar sayılarını buraya yazın (virgülle ayırın)...">
+        <button onclick="desifrele()">Deşifrele</button>
+        <div class="result" id="decryptedResult"></div>
+    </div>
     <script>
-        // JavaScript Kodları
         const keithAlfabesi = {
-            'A': [14, 3], 'B': [19, 2], 'C': [28, 3], 'D': [47, 4], 'E': [61, 6],
-            'F': [75, 5], 'G': [122, 6], 'H': [149, 3], 'I': [183, 6], 'J': [199, 2],
-            'K': [244, 6], 'L': [298, 3], 'M': [305, 6], 'N': [323, 6], 'O': [366, 6],
-            'P': [427, 6], 'Q': [488, 6], 'R': [497, 4], 'S': [549, 6], 'T': [646, 6],
-            'U': [795, 5], 'V': [911, 9], 'W': [969, 6], 'X': [1292, 6], 'Y': [1301, 11],
-            'Z': [1499, 3]
+            'A': [14,3], 'B':[19,2], 'C':[28,3], 'D':[47,4], 'E':[61,6], 
+            'F':[75,5], 'G':[122,6], 'H':[149,3], 'I':[183,6], 'J':[199,2],
+            'K':[244,6], 'L':[298,3], 'M':[305,6], 'N':[323,6], 'O':[366,6],
+            'P':[427,6], 'Q':[488,6], 'R':[497,4], 'S':[549,6], 'T':[646,6],
+            'U':[795,5], 'V':[911,9], 'W':[969,6], 'X':[1292,6], 'Y':[1301,11],
+            'Z':[1499,3]
         };
 
+        // Look-and-Say fonksiyonu
         function lookAndSay(sayi, adim) {
-            sayi = BigInt(sayi);
-            for (let i = 0; i < adim; i++) {
-                let sayiStr = sayi.toString();
-                let yeniSayi = "";
-                let j = 0;
-                while (j < sayiStr.length) {
-                    let count = 1;
-                    while (j + 1 < sayiStr.length && sayiStr[j] === sayiStr[j + 1]) {
-                        j++;
-                        count++;
+            let current = BigInt(sayi);
+            for(let i=0; i<adim; i++){
+                let str = current.toString();
+                let result = "";
+                let count = 1;
+                for(let j=0; j<str.length; j++){
+                    if(str[j] === str[j+1]) count++;
+                    else {
+                        result += count + str[j];
+                        count = 1;
                     }
-                    yeniSayi += count.toString() + sayiStr[j];
-                    j++;
                 }
-                sayi = BigInt(yeniSayi);
+                current = BigInt(result);
             }
-            return sayi.toString();
+            return current.toString();
         }
 
-        function modVeHarfDonusumu(sayi) {
-            let modSonucu = BigInt(sayi) % 26n;
-            if (modSonucu === 0n) return 'Z';
-            return String.fromCharCode('A'.charCodeAt(0) + Number(modSonucu) - 1);
+        // Mod 26 ve harf dönüşümü
+        function modVeHarf(sayi) {
+            const mod = BigInt(sayi) % 26n;
+            return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
         }
 
+        // Şifreleme fonksiyonu
         function sifrele() {
-            let inputText = document.getElementById('inputText').value.toUpperCase();
-            let sifrelenmisKelime = "";
-            let harfTekrarSayilari = {};
+            const input = document.getElementById('inputText').value.toUpperCase();
+            let encrypted = "";
+            let keys = [];
+            const repeatMap = {};
 
-            for (let harf of inputText) {
-                if (keithAlfabesi[harf]) {
-                    harfTekrarSayilari[harf] = (harfTekrarSayilari[harf] || 0) + 1;
-                    let [baslangicDegeri, keithAdimi] = keithAlfabesi[harf];
-                    keithAdimi += harfTekrarSayilari[harf] - 1;
-                    let lookAndSaySonucu = lookAndSay(baslangicDegeri, keithAdimi);
-                    let sifrelenmisHarf = modVeHarfDonusumu(lookAndSaySonucu);
-                    sifrelenmisKelime += sifrelenmisHarf;
+            for(const char of input) {
+                if(keithAlfabesi[char]) {
+                    repeatMap[char] = (repeatMap[char] || 0) + 1;
+                    const [base, steps] = keithAlfabesi[char];
+                    const totalSteps = steps + (repeatMap[char] - 1); // Tekrarlanan harfler için adım artışı
+                    const processed = lookAndSay(base, totalSteps);
+                    encrypted += modVeHarf(processed);
+                    keys.push((BigInt(processed)/26n).toString());
                 } else {
-                    sifrelenmisKelime += harf;
+                    encrypted += char;
+                    keys.push("0");
                 }
             }
 
-            document.getElementById('result').innerText = "Şifrelenmiş Metin: " + sifrelenmisKelime;
+            document.getElementById('encryptedResult').textContent = `Şifrelenmiş Metin: ${encrypted}`;
+            document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
+        }
+
+        // Ters Conway fonksiyonu
+        function tersConway(sayi) {
+            let str = sayi.toString();
+            if(str.length % 2 !== 0) str = "0" + str;
+            let result = "";
+            for(let i=0; i<str.length; i+=2) {
+                const count = parseInt(str[i]) || 1;
+                const digit = str[i+1] || '0';
+                result += digit.repeat(Math.max(1, count));
+            }
+            console.log(`Ters Conway Result: ${result}`); // Debugging için ekledik
+            return result;
+        }
+
+        // Deşifreleme fonksiyonu (geliştirilmiş)
+        function desifrele() {
+            const encrypted = document.getElementById('encryptedInput').value.toUpperCase();
+            const keys = document.getElementById('keyInput').value.split(',').map(k => k.trim());
+            let decrypted = "";
+
+            for(let i=0; i<encrypted.length; i++) {
+                const char = encrypted[i];
+                if(!/[A-Z]/.test(char)) {
+                    decrypted += char;
+                    continue;
+                }
+
+                const kalan = BigInt(char === 'Z' ? 0 : char.charCodeAt(0) - 64);
+                const bolunen = BigInt(keys[i] || 0) * 26n + kalan;
+                let currentValue = bolunen.toString();
+                
+                console.log(`Character: ${char}, Key: ${keys[i]}, Bolunen: ${bolunen}, Kalan: ${kalan}`);
+
+                let foundChar = char;
+                let matchFound = false;
+
+                for(let step=0; step<100; step++) {
+                    // Fib-Par sayısını kontrol et
+                    const fibParEntry = Object.entries(keithAlfabesi).find(([_, [val]]) => 
+                        parseInt(currentValue) === val
+                    );
+
+                    if(fibParEntry) {
+                        foundChar = fibParEntry[0];
+                        matchFound = true;
+                        break;
+                    }
+
+                    if(currentValue.length < 2) break;
+                    const newValue = tersConway(currentValue);
+                    if(newValue === currentValue) break;
+                    currentValue = newValue;
+
+                    console.log(`Step: ${step}, New Value: ${newValue}`);
+                }
+
+                decrypted += matchFound ? foundChar : char;
+            }
+
+            document.getElementById('decryptedResult').textContent = `Deşifrelenmiş Metin: ${decrypted}`;
         }
     </script>
 </body>
