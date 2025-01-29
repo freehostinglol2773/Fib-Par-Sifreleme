@@ -176,7 +176,7 @@
             position: absolute;
             left: 0;
             padding: 0.5em;
-            margin-left: 3.8em;
+            margin-left: 1.8em;
             pointer-events: none;
             transition: all 0.3s ease;
             color: rgb(255, 255, 255);
@@ -194,192 +194,126 @@
             border-color: rgb(0, 0, 0);
         }
 
-        /* Yeni CSS kodları */
-        .animated-button {
+        /* From Uiverse.io by Galahhad */
+        /* tooltip settings 👇 */
+
+        .copy {
+            /* button */
+            --button-bg: #353434;
+            --button-hover-bg: #464646;
+            --button-text-color: #CCCCCC;
+            --button-hover-text-color: #8bb9fe;
+            --button-border-radius: 10px;
+            --button-diameter: 36px;
+            --button-outline-width: 1px;
+            --button-outline-color: rgb(141, 141, 141);
+            /* tooltip */
+            --tooltip-bg: #f4f3f3;
+            --toolptip-border-radius: 4px;
+            --tooltip-font-family: Menlo, Roboto Mono, monospace;
+            /* 👆 this field should not be empty */
+            --tooltip-font-size: 12px;
+            /* 👆 this field should not be empty */
+            --tootip-text-color: rgb(50, 50, 50);
+            --tooltip-padding-x: 7px;
+            --tooltip-padding-y: 7px;
+            --tooltip-offset: 8px;
+            /* --tooltip-transition-duration: 0.3s; */
+            /* 👆 if you need a transition, 
+            just remove the comment,
+            but I didn't like the transition :| */
+        }
+
+        .copy {
+            box-sizing: border-box;
+            width: var(--button-diameter);
+            height: var(--button-diameter);
+            border-radius: var(--button-border-radius);
+            background-color: var(--button-bg);
+            color: var(--button-text-color);
+            border: none;
+            cursor: pointer;
             position: relative;
-            padding: 1em 1.8em;
             outline: none;
-            border: 1px solid #212121;
-            background: #212121;
-            color: #ffffff;
-            text-transform: none; /* Normal yazı */
-            letter-spacing: 2px;
-            font-size: 15px;
-            overflow: hidden;
-            transition: 0.2s;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: normal;
         }
 
-        .animated-button:hover {
-            box-shadow: 0 0 10px #1a1a1a, 0 0 35px #1a1a1a, 0 0 50px #1a1a1a;
-            transition-delay: 0.7s;
-        }
-
-        .animated-button span {
+        .tooltip {
             position: absolute;
-        }
-
-        .animated-button span:nth-child(1) {
+            opacity: 0;
+            visibility: 0;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ae00ff);
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font: var(--tooltip-font-size) var(--tooltip-font-family);
+            color: var(--tootip-text-color);
+            background: var(--tooltip-bg);
+            padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
+            border-radius: var(--toolptip-border-radius);
+            pointer-events: none;
+            transition: all var(--tooltip-transition-duration) cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .animated-button:hover span:nth-child(1) {
-            left: 100%;
-            transition: 0.7s;
+        .tooltip::before {
+            content: attr(data-text-initial);
         }
 
-        .animated-button span:nth-child(3) {
-            bottom: 0;
-            right: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #001eff);
-        }
-
-        .animated-button:hover span:nth-child(3) {
-            right: 100%;
-            transition: 0.7s;
-            transition-delay: 0.35s;
-        }
-
-        .animated-button span:nth-child(2) {
-            top: -100%;
-            right: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg, transparent, #ae00ff);
-        }
-
-        .animated-button:hover span:nth-child(2) {
-            top: 100%;
-            transition: 0.7s;
-            transition-delay: 0.17s;
-        }
-
-        .animated-button span:nth-child(4) {
-            bottom: -100%;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(360deg, transparent, #001eff);
-        }
-
-        .animated-button:hover span:nth-child(4) {
-            bottom: 100%;
-            transition: 0.7s;
-            transition-delay: 0.52s;
-        }
-
-        .animated-button:active {
-            background: #ae00af;
-            background: linear-gradient(to top right, #ae00af, #001eff);
-            color: #bfbfbf;
-            box-shadow: 0 0 8px #ae00ff, 0 0 8px #001eff, 0 0 8px #ae00ff;
-            transition: 0.2s;
-        }
-
-        .animated-button:active span:nth-child(1),
-        .animated-button:active span:nth-child(2),
-        .animated-button:active span:nth-child(3),
-        .animated-button:active span:nth-child(4) {
-            transition: none;
-            transition-delay: none;
-        }
-
-        /* Yeni CSS kodları */
-        .custom-animated-button {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 16px 36px;
-            border: 4px solid;
-            border-color: transparent;
-            font-size: 16px;
-            background-color: inherit;
-            border-radius: 0; /* Dikdörtgen yapmak için */
-            font-weight: 600;
-            color: #fff;
-            box-shadow: 0 0 0 2px black;
-            cursor: pointer;
-            overflow: hidden;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            margin-top: 40px; /* Butonu biraz daha aşağıda konumlandırmak için */
-        }
-
-        .custom-animated-button svg {
+        .tooltip::after {
+            content: "";
             position: absolute;
-            width: 24px;
-            fill: black;
-            z-index: 9;
-            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            bottom: calc(var(--tooltip-padding-y) / 2 * -1);
+            width: var(--tooltip-padding-y);
+            height: var(--tooltip-padding-y);
+            background: inherit;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            z-index: -999;
+            pointer-events: none;
         }
 
-        .custom-animated-button .arr-1 {
-            right: 16px;
-        }
-
-        .custom-animated-button .arr-2 {
-            left: -25%;
-        }
-
-        .custom-animated-button .circle {
+        .copy svg {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            background-color: black;
-            border-radius: 50%;
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .custom-animated-button .text {
-            position: relative;
-            z-index: 1;
-            transform: translateX(-12px);
-            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        .checkmark {
+            display: none;
         }
 
-        .custom-animated-button:hover {
-            box-shadow: 0 0 0 12px transparent;
-            color: #f1f1f1;
-            border-radius: 0; /* Dikdörtgen yapmak için */
-        }
+        /* actions */
 
-        .custom-animated-button:hover .arr-1 {
-            right: -25%;
-        }
-
-        .custom-animated-button:hover .arr-2 {
-            left: 16px;
-        }
-
-        .custom-animated-button:hover .text {
-            transform: translateX(12px);
-        }
-
-        .custom-animated-button:hover svg {
-            fill: #212121;
-        }
-
-        .custom-animated-button:active {
-            scale: 0.95;
-            box-shadow: 0 0 0 4px black;
-        }
-
-        .custom-animated-button:hover .circle {
-            width: 220px;
-            height: 220px;
+        .copy:hover .tooltip,
+        .copy:focus:not(:focus-visible) .tooltip {
             opacity: 1;
+            visibility: visible;
+            top: calc((100% + var(--tooltip-offset)) * -1);
+        }
+
+        .copy:focus:not(:focus-visible) .tooltip::before {
+            content: attr(data-text-end);
+        }
+
+        .copy:focus:not(:focus-visible) .clipboard {
+            display: none;
+        }
+
+        .copy:focus:not(:focus-visible) .checkmark {
+            display: block;
+        }
+
+        .copy:hover,
+        .copy:focus {
+            background-color: var(--button-hover-bg);
+        }
+
+        .copy:active {
+            outline: var(--button-outline-width) solid var(--button-outline-color);
+        }
+
+        .copy:hover svg {
+            color: var(--button-hover-text-color);
         }
     </style>
 </head>
@@ -392,26 +326,26 @@
                     <textarea id="inputText" placeholder="" required="" autocomplete="off"></textarea>
                     <label for="inputText">Şifrelenecek metin</label>
                 </div>
-                <button type="button" class="animated-button" onclick="sifrele()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Şifrele
-                </button>
+                <button type="button" onclick="sifrele()">Şifrele</button>
                 <div class="result" id="encryptedResult"></div>
                 <div class="result" id="keyResult"></div>
+                <button class="copy" onclick="copyToClipboard('encryptedResult')">
+                    <span data-text-end="Copied!" data-text-initial="Copy to clipboard" class="tooltip"></span>
+                    <span>
+                    <svg xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 6.35 6.35" y="0" x="0" height="20" width="20" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" class="clipboard">
+                        <g>
+                        <path fill="currentColor" d="M2.43.265c-.3 0-.548.236-.573.53h-.328a.74.74 0 0 0-.735.734v3.822a.74.74 0 0 0 .735.734H4.82a.74.74 0 0 0 .735-.734V1.529a.74.74 0 0 0-.735-.735h-.328a.58.58 0 0 0-.573-.53zm0 .529h1.49c.032 0 .049.017.049.049v.431c0 .032-.017.049-.049.049H2.43c-.032 0-.05-.017-.05-.049V.843c0-.032.018-.05.05-.05zm-.901.53h.328c.026.292.274.528.573.528h1.49a.58.58 0 0 0 .573-.529h.328a.2.2 0 0 1 .206.206v3.822a.2.2 0 0 1-.206.205H1.53a.2.2 0 0 1-.206-.205V1.529a.2.2 0 0 1 .206-.206z"></path>
+                        </g>
+                    </svg>
+                    <svg xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 24 24" y="0" x="0" height="18" width="18" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" class="checkmark">
+                        <g>
+                        <path data-original="#000000" fill="currentColor" d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"></path>
+                        </g>
+                    </svg>
+                    </span>
+                </button>
             </form>
-            <button class="custom-animated-button" onclick="togglePanel()">
-                <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
-                </svg>
-                <span class="text">Deşifreleme</span>
-                <span class="circle"></span>
-                <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
-                </svg>
-            </button>
+            <button class="toggle-button" onclick="togglePanel()">Deşifreleme için geç</button>
         </div>
         <div class="panel decrypt-panel">
             <h1>Deşifreleme</h1>
@@ -419,145 +353,104 @@
             <form class="form">
                 <input type="text" id="encryptedInput" placeholder="Şifrelenmiş metni buraya yazın">
                 <input type="text" id="keyInput" placeholder="Bölüm anahtar sayılarını buraya yazın">
-                <button type="button" class="animated-button" onclick="desifrele()">Deşifrele</button>
+                <button type="button" onclick="desifrele()">Deşifrele</button>
                 <div class="result" id="decryptedResult"></div>
             </form>
-            <button class="custom-animated-button" onclick="togglePanel()">
-                <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
-                </svg>
-                <span class="text">Şifreleme</span>
-                <span class="circle"></span>
-                <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
-                </svg>
-            </button>
+            <button class="toggle-button" onclick="togglePanel()">Şifreleme için geç</button>
         </div>
     </div>
     <script>
         const container = document.getElementById('container');
 
-function togglePanel() {
-    container.classList.toggle('animate');
-}
+        function togglePanel() {
+            container.classList.toggle('animate');
+        }
 
-const keithAlfabesi = {
-    'A': [14,3], 'B':[19,2], 'C':[28,3], 'D':[47,4], 'E':[61,6], 
-    'F':[75,5], 'G':[122,6], 'H':[149,3], 'I':[183,6], 'J':[199,2],
-    'K':[244,6], 'L':[298,3], 'M':[305,6], 'N':[323,6], 'O':[366,6],
-    'P':[427,6], 'Q':[488,6], 'R':[497,4], 'S':[549,6], 'T':[646,6],
-    'U':[795,5], 'V':[911,9], 'W':[969,6], 'X':[1292,6], 'Y':[1301,11],
-    'Z':[1499,3]
-};
+        const keithAlfabesi = {
+            'A': [14,3], 'B':[19,2], 'C':[28,3], 'D':[47,4], 'E':[61,6], 
+            'F':[75,5], 'G':[122,6], 'H':[149,3], 'I':[183,6], 'J':[199,2],
+            'K':[244,6], 'L':[298,3], 'M':[305,6], 'N':[323,6], 'O':[366,6],
+            'P':[427,6], 'Q':[488,6], 'R':[497,4], 'S':[549,6], 'T':[646,6],
+            'U':[795,5], 'V':[911,9], 'W':[969,6], 'X':[1292,6], 'Y':[1301,11],
+            'Z':[1499,3]
+        };
 
-// Look-and-Say fonksiyonu
-function lookAndSay(sayi, adim) {
-    let current = BigInt(sayi);
-    for(let i=0; i<adim; i++){
-        let str = current.toString();
-        let result = "";
-        let count = 1;
-        for(let j=0; j<str.length; j++){
-            if(str[j] === str[j+1]) count++;
-            else {
-                result += count + str[j];
-                count = 1;
+        // Look-and-Say fonksiyonu
+        function lookAndSay(sayi, adim) {
+            let current = BigInt(sayi);
+            for(let i=0; i<adim; i++){
+                let str = current.toString();
+                let result = "";
+                let count = 1;
+                for(let j=0; j<str.length; j++){
+                    if(str[j] === str[j+1]) count++;
+                    else {
+                        result += count + str[j];
+                        count = 1;
+                    }
+                }
+                current = BigInt(result);
             }
-        }
-        current = BigInt(result);
-    }
-    return current.toString();
-}
-
-// Mod 26 ve harf dönüşümü
-function modVeHarf(sayi) {
-    const mod = BigInt(sayi) % 26n;
-    return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
-}
-
-// Şifreleme fonksiyonu
-function sifrele() {
-    const input = document.getElementById('inputText').value.toUpperCase();
-    let encrypted = "";
-    let keys = [];
-    const repeatMap = {};
-
-    for(const char of input) {
-        if(keithAlfabesi[char]) {
-            repeatMap[char] = (repeatMap[char] || 0) + 1;
-            const [base, steps] = keithAlfabesi[char];
-            const totalSteps = steps + (repeatMap[char] - 1); // Tekrarlanan harfler için adım artışı
-            const processed = lookAndSay(base, totalSteps);
-            encrypted += modVeHarf(processed);
-            keys.push((BigInt(processed)/26n).toString());
-        } else {
-            encrypted += char;
-            keys.push("0");
-        }
-    }
-
-    document.getElementById('encryptedResult').textContent = `Şifrelenmiş Metin: ${encrypted}`;
-    document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
-}
-
-// Ters Conway fonksiyonu
-function tersConway(sayi) {
-    let str = sayi.toString();
-    if(str.length % 2 !== 0) str = "0" + str;
-    let result = "";
-    for(let i=0; i<str.length; i+=2) {
-        const count = parseInt(str[i]) || 1;
-        const digit = str[i+1] || '0';
-        result += digit.repeat(Math.max(1, count));
-    }
-    console.log(`Ters Conway Result: ${result}`); // Debugging için ekledik
-    return result;
-}
-
-// Deşifreleme fonksiyonu (geliştirilmiş)
-function desifrele() {
-    const encrypted = document.getElementById('encryptedInput').value.toUpperCase();
-    const keys = document.getElementById('keyInput').value.split(',').map(k => k.trim());
-    let decrypted = "";
-
-    for(let i=0; i<encrypted.length; i++) {
-        const char = encrypted[i];
-        if(!/[A-Z]/.test(char)) {
-            decrypted += char;
-            continue;
+            return current.toString();
         }
 
-        const kalan = BigInt(char === 'Z' ? 0 : char.charCodeAt(0) - 64);
-        const bolunen = BigInt(keys[i] || 0) * 26n + kalan;
-        let currentValue = bolunen.toString();
-        
-        console.log(`Character: ${char}, Key: ${keys[i]}, Bolunen: ${bolunen}, Kalan: ${kalan}`);
+        // Mod 26 ve harf dönüşümü
+        function modVeHarf(sayi) {
+            const mod = BigInt(sayi) % 26n;
+            return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
+        }
 
-        let foundChar = char;
-        let matchFound = false;
+        // Şifreleme fonksiyonu
+        function sifrele() {
+            const input = document.getElementById('inputText').value.toUpperCase();
+            let encrypted = "";
+            let keys = [];
+            const repeatMap = {};
 
-        for(let step=0; step<100; step++) {
-            // Fib-Par sayısını kontrol et
-            const fibParEntry = Object.entries(keithAlfabesi).find(([_, [val]]) => 
-                parseInt(currentValue) === val
-            );
-
-            if(fibParEntry) {
-                foundChar = fibParEntry[0];
-                matchFound = true;
-                break;
+            for(const char of input) {
+                if(keithAlfabesi[char]) {
+                    repeatMap[char] = (repeatMap[char] || 0) + 1;
+                    const [base, steps] = keithAlfabesi[char];
+                    const totalSteps = steps + (repeatMap[char] - 1); // Tekrarlanan harfler için adım artışı
+                    const processed = lookAndSay(base, totalSteps);
+                    encrypted += modVeHarf(processed);
+                    keys.push((BigInt(processed)/26n).toString());
+                } else {
+                    encrypted += char;
+                    keys.push("0");
+                }
             }
 
-            if(currentValue.length < 2) break;
-            const newValue = tersConway(currentValue);
-            if(newValue === currentValue) break;
-            currentValue = newValue;
-
-            console.log(`Step: ${step}, New Value: ${newValue}`);
+            document.getElementById('encryptedResult').textContent = `Şifrelenmiş Metin: ${encrypted}`;
+            document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
         }
 
-        decrypted += matchFound ? foundChar : char;
-    }
+        // Ters Conway fonksiyonu
+        function tersConway(sayi) {
+            let str = sayi.toString();
+            if(str.length % 2 !== 0) str = "0" + str;
+            let result = "";
+            for(let i=0; i<str.length; i+=2) {
+                const count = parseInt(str[i]) || 1;
+                const digit = str[i+1] || '0';
+                result += digit.repeat(Math.max(1, count));
+            }
+            console.log(`Ters Conway Result: ${result}`); // Debugging için ekledik
+            return result;
+        }
 
-    document.getElementById('decryptedResult').textContent = `Deşifrelenmiş Metin: ${decrypted}`;
-}
+        // Deşifreleme fonksiyonu (geliştirilmiş)
+        function desifrele() {
+            const encrypted = document.getElementById('encryptedInput').value.toUpperCase();
+            const keys = document.getElementById('keyInput').value.split(',').map(k => k.trim());
+            let decrypted = "";
+
+            for(let i=0; i<encrypted.length; i++) {
+                const char = encrypted[i];
+                if(!/[A-Z]/.test(char)) {
+                    decrypted += char;
+                    continue;
+                }
+
+                const kalan = BigInt(char === 'Z' ? 0 : char.charCodeAt(0) - 64);
+                const bol
