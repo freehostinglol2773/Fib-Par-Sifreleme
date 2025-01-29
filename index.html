@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Şifreleme ve Deşifreleme Aracı</title>
     <style>
-        /* Mevcut CSS kodlarınız */
-
         * {
             margin: 0;
             padding: 0;
@@ -129,8 +127,8 @@
             border: 1px solid #333;
             border-radius: 4px;
             color: #fff;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
+            word-wrap: break-word; /* Taşmayı engellemek için */
+            overflow-wrap: break-word; /* Taşmayı engellemek için */
         }
 
         .decrypt-panel .form input, .decrypt-panel .form textarea, .decrypt-panel .result {
@@ -178,7 +176,7 @@
             position: absolute;
             left: 0;
             padding: 0.5em;
-            margin-left: 1.8em;
+            margin-left: 3.8em;
             pointer-events: none;
             transition: all 0.3s ease;
             color: rgb(255, 255, 255);
@@ -489,6 +487,4 @@
                     repeatMap[char] = (repeatMap[char] || 0) + 1;
                     const [base, steps] = keithAlfabesi[char];
                     const totalSteps = steps + (repeatMap[char] - 1); // Tekrarlanan harfler için adım artışı
-                    const processed = lookAndSay(base, totalSteps);
-                    encrypted += modVeHarf(processed);
-                    keys.push((
+                    const processed = lookAndSay(base
