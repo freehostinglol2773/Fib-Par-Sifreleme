@@ -437,54 +437,127 @@
     <script>
         const container = document.getElementById('container');
 
-        function togglePanel() {
-            container.classList.toggle('animate');
-        }
+function togglePanel() {
+    container.classList.toggle('animate');
+}
 
-        const keithAlfabesi = {
-            'A': [14,3], 'B':[19,2], 'C':[28,3], 'D':[47,4], 'E':[61,6], 
-            'F':[75,5], 'G':[122,6], 'H':[149,3], 'I':[183,6], 'J':[199,2],
-            'K':[244,6], 'L':[298,3], 'M':[305,6], 'N':[323,6], 'O':[366,6],
-            'P':[427,6], 'Q':[488,6], 'R':[497,4], 'S':[549,6], 'T':[646,6],
-            'U':[795,5], 'V':[911,9], 'W':[969,6], 'X':[1292,6], 'Y':[1301,11],
-            'Z':[1499,3]
-        };
+const keithAlfabesi = {
+    'A': [14,3], 'B':[19,2], 'C':[28,3], 'D':[47,4], 'E':[61,6], 
+    'F':[75,5], 'G':[122,6], 'H':[149,3], 'I':[183,6], 'J':[199,2],
+    'K':[244,6], 'L':[298,3], 'M':[305,6], 'N':[323,6], 'O':[366,6],
+    'P':[427,6], 'Q':[488,6], 'R':[497,4], 'S':[549,6], 'T':[646,6],
+    'U':[795,5], 'V':[911,9], 'W':[969,6], 'X':[1292,6], 'Y':[1301,11],
+    'Z':[1499,3]
+};
 
-        // Look-and-Say fonksiyonu
-        function lookAndSay(sayi, adim) {
-            let current = BigInt(sayi);
-            for(let i=0; i<adim; i++){
-                let str = current.toString();
-                let result = "";
-                let count = 1;
-                for(let j=0; j<str.length; j++){
-                    if(str[j] === str[j+1]) count++;
-                    else {
-                        result += count + str[j];
-                        count = 1;
-                    }
-                }
-                current = BigInt(result);
+// Look-and-Say fonksiyonu
+function lookAndSay(sayi, adim) {
+    let current = BigInt(sayi);
+    for(let i=0; i<adim; i++){
+        let str = current.toString();
+        let result = "";
+        let count = 1;
+        for(let j=0; j<str.length; j++){
+            if(str[j] === str[j+1]) count++;
+            else {
+                result += count + str[j];
+                count = 1;
             }
-            return current.toString();
+        }
+        current = BigInt(result);
+    }
+    return current.toString();
+}
+
+// Mod 26 ve harf dönüşümü
+function modVeHarf(sayi) {
+    const mod = BigInt(sayi) % 26n;
+    return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
+}
+
+// Şifreleme fonksiyonu
+function sifrele() {
+    const input = document.getElementById('inputText').value.toUpperCase();
+    let encrypted = "";
+    let keys = [];
+    const repeatMap = {};
+
+    for(const char of input) {
+        if(keithAlfabesi[char]) {
+            repeatMap[char] = (repeatMap[char] || 0) + 1;
+            const [base, steps] = keithAlfabesi[char];
+            const totalSteps = steps + (repeatMap[char] - 1); // Tekrarlanan harfler için adım artışı
+            const processed = lookAndSay(base, totalSteps);
+            encrypted += modVeHarf(processed);
+            keys.push((BigInt(processed)/26n).toString());
+        } else {
+            encrypted += char;
+            keys.push("0");
+        }
+    }
+
+    document.getElementById('encryptedResult').textContent = `Şifrelenmiş Metin: ${encrypted}`;
+    document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
+}
+
+// Ters Conway fonksiyonu
+function tersConway(sayi) {
+    let str = sayi.toString();
+    if(str.length % 2 !== 0) str = "0" + str;
+    let result = "";
+    for(let i=0; i<str.length; i+=2) {
+        const count = parseInt(str[i]) || 1;
+        const digit = str[i+1] || '0';
+        result += digit.repeat(Math.max(1, count));
+    }
+    console.log(`Ters Conway Result: ${result}`); // Debugging için ekledik
+    return result;
+}
+
+// Deşifreleme fonksiyonu (geliştirilmiş)
+function desifrele() {
+    const encrypted = document.getElementById('encryptedInput').value.toUpperCase();
+    const keys = document.getElementById('keyInput').value.split(',').map(k => k.trim());
+    let decrypted = "";
+
+    for(let i=0; i<encrypted.length; i++) {
+        const char = encrypted[i];
+        if(!/[A-Z]/.test(char)) {
+            decrypted += char;
+            continue;
         }
 
-        // Mod 26 ve harf dönüşümü
-        function modVeHarf(sayi) {
-            const mod = BigInt(sayi) % 26n;
-            return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
+        const kalan = BigInt(char === 'Z' ? 0 : char.charCodeAt(0) - 64);
+        const bolunen = BigInt(keys[i] || 0) * 26n + kalan;
+        let currentValue = bolunen.toString();
+        
+        console.log(`Character: ${char}, Key: ${keys[i]}, Bolunen: ${bolunen}, Kalan: ${kalan}`);
+
+        let foundChar = char;
+        let matchFound = false;
+
+        for(let step=0; step<100; step++) {
+            // Fib-Par sayısını kontrol et
+            const fibParEntry = Object.entries(keithAlfabesi).find(([_, [val]]) => 
+                parseInt(currentValue) === val
+            );
+
+            if(fibParEntry) {
+                foundChar = fibParEntry[0];
+                matchFound = true;
+                break;
+            }
+
+            if(currentValue.length < 2) break;
+            const newValue = tersConway(currentValue);
+            if(newValue === currentValue) break;
+            currentValue = newValue;
+
+            console.log(`Step: ${step}, New Value: ${newValue}`);
         }
 
-        // Şifreleme fonksiyonu
-        function sifrele() {
-            const input = document.getElementById('inputText').value.toUpperCase();
-            let encrypted = "";
-            let keys = [];
-            const repeatMap = {};
+        decrypted += matchFound ? foundChar : char;
+    }
 
-            for(const char of input) {
-                if(keithAlfabesi[char]) {
-                    repeatMap[char] = (repeatMap[char] || 0) + 1;
-                    const [base, steps] = keithAlfabesi[char];
-                    const totalSteps = steps + (repeatMap[char] - 1); // Tekrarlanan harfler için adım artışı
-                    const processed = lookAndSay
+    document.getElementById('decryptedResult').textContent = `Deşifrelenmiş Metin: ${decrypted}`;
+}
