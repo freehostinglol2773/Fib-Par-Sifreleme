@@ -371,7 +371,7 @@
         <!-- Şifreleme Paneli -->
         <div class="panel encrypt-panel">
             <h1>Şifreleme</h1>
-            <form class="form">
+            <form class="form" onsubmit="return false;">
                 <div class="inputGroup">
                     <textarea id="inputText" placeholder="" required="" autocomplete="off"></textarea>
                     <label for="inputText">Şifrelenecek metin</label>
@@ -399,7 +399,8 @@
         <!-- Deşifreleme Paneli -->
         <div class="panel decrypt-panel">
             <h1>Deşifreleme</h1>
-            <form class="form">
+            <p>Deşifrelenecek metni girin</p>
+            <form class="form" onsubmit="return false;">
                 <input type="text" id="encryptedInput" placeholder="Şifrelenmiş metni buraya yazın">
                 <input type="text" id="keyInput" placeholder="Bölüm anahtar sayılarını buraya yazın">
                 <button type="button" class="ui-btn decrypt-btn" onclick="desifrele()">
@@ -416,8 +417,13 @@
                 <span class="text">Şifreleme</span>
                 <span class="circle"></span>
                 <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7.8284 10.9999L13.1924 5.63589L11.7782 4.22168L4 11.9999L11.7782 19.778L13.1924
-                        <script>
+                    <path d="M7.8284 10.9999L13.1924 5.63589L11.7782 4.22168L4 11.9999L11.7782 19.778L13.1924 18.3638L7.8284 12.9999H20V10.9999H7.8284Z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
         const container = document.getElementById('container');
 
         function togglePanel() {
@@ -433,7 +439,6 @@
             'Z':[1499,3]
         };
 
-        // Look-and-Say fonksiyonu
         function lookAndSay(sayi, adim) {
             let current = BigInt(sayi);
             for(let i=0; i<adim; i++){
@@ -452,13 +457,11 @@
             return current.toString();
         }
 
-        // Mod 26 ve harf dönüşümü
         function modVeHarf(sayi) {
             const mod = BigInt(sayi) % 26n;
             return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
         }
 
-        // Şifreleme fonksiyonu
         function sifrele() {
             const input = document.getElementById('inputText').value.toUpperCase();
             let encrypted = "";
@@ -483,7 +486,6 @@
             document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
         }
 
-        // Ters Conway fonksiyonu
         function tersConway(sayi) {
             let str = sayi.toString();
             if(str.length % 2 !== 0) str = "0" + str;
@@ -496,7 +498,6 @@
             return result;
         }
 
-        // Deşifreleme fonksiyonu
         function desifrele() {
             const encrypted = document.getElementById('encryptedInput').value.toUpperCase();
             const keys = document.getElementById('keyInput').value.split(',').map(k => k.trim());
