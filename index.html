@@ -292,6 +292,8 @@
             color: #fff;
             border-radius: 10px;
             word-break: break-all;
+            position: relative;
+            overflow: hidden;
         }
 
         .decrypt-panel .result {
@@ -366,17 +368,11 @@
         }
 
         /* Shine Effect Styles */
-        .shine-container {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
         .shine {
             position: absolute;
             top: 0;
             left: -70px;
-            height: 98px;
+            height: 100%;
             width: 50px;
             background: rgba(255, 255, 255, 0.4);
             transition: all 0.4s linear;
@@ -384,7 +380,7 @@
             pointer-events: none;
         }
 
-        .shine-container:hover .shine {
+        .result.shine-container:hover .shine {
             transform: skewX(20deg) translateX(300px);
         }
     </style>
@@ -399,13 +395,10 @@
                     <textarea id="inputText" placeholder="" required="" autocomplete="off"></textarea>
                     <label for="inputText">Şifrelenecek metin</label>
                 </div>
-                <div class="shine-container">
-                    <button type="button" class="ui-btn" onclick="sifrele()">
-                        <span>Şifrele</span>
-                    </button>
-                    <div class="shine"></div>
-                </div>
-                <div class="result" id="encryptedResult"></div>
+                <button type="button" class="ui-btn" onclick="sifrele()">
+                    <span>Şifrele</span>
+                </button>
+                <div class="result shine-container" id="encryptedResult"></div>
                 <div class="result" id="keyResult"></div>
             </form>
             <button class="animated-button" onclick="togglePanel()" style="margin-top: 40px;">
@@ -426,13 +419,10 @@
             <form class="form" onsubmit="return false;">
                 <input type="text" id="encryptedInput" placeholder="Şifrelenmiş metni buraya yazın">
                 <input type="text" id="keyInput" placeholder="Bölüm anahtar sayılarını buraya yazın">
-                <div class="shine-container">
-                    <button type="button" class="ui-btn decrypt-btn" onclick="desifrele()">
-                        <span>Deşifrele</span>
-                    </button>
-                    <div class="shine"></div>
-                </div>
-                <div class="result" id="decryptedResult"></div>
+                <button type="button" class="ui-btn decrypt-btn" onclick="desifrele()">
+                    <span>Deşifrele</span>
+                </button>
+                <div class="result shine-container" id="decryptedResult"></div>
             </form>
             <button class="animated-button" onclick="togglePanel()" style="margin-top: 40px;">
                 <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
@@ -506,7 +496,7 @@
                 }
             }
 
-            document.getElementById('encryptedResult').textContent = `Şifrelenmiş Metin: ${encrypted}`;
+            document.getElementById('encryptedResult').innerHTML = `<div class="shine"></div>Şifrelenmiş Metin: ${encrypted}`;
             document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
         }
 
@@ -561,7 +551,7 @@
                 decrypted += matchFound ? foundChar : char;
             }
 
-            document.getElementById('decryptedResult').textContent = `Deşifrelenmiş Metin: ${decrypted}`;
+            document.getElementById('decryptedResult').innerHTML = `<div class="shine"></div>Deşifrelenmiş Metin: ${decrypted}`;
         }
     </script>
 </body>
