@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Şifreleme ve Deşifreleme Aracı</title>
     <style>
+        /* Genel Stiller */
         * {
             margin: 0;
             padding: 0;
@@ -16,10 +17,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background: linear-gradient(135deg, #ff0000, #ff1c3b);
         }
 
+        /* Container Stili */
         .container {
             width: 800px;
             height: 600px;
@@ -31,6 +33,7 @@
             position: relative;
         }
 
+        /* Panel Stilleri */
         .panel {
             flex: 1;
             padding: 40px;
@@ -64,135 +67,134 @@
             transform: translateX(0);
         }
 
-        h1 {
-            margin-bottom: 20px;
-        }
-
-        p {
-            margin-bottom: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #000;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background-color: #333;
-        }
-
+        /* Form Elemanları */
         .form {
             width: 100%;
             max-width: 300px;
             display: flex;
             flex-direction: column;
-        }
-
-        .form input, .form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #333;
-            border-radius: 5px;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-        }
-
-        .form button {
-            background-color: #000;
-            color: #fff;
-            border: none;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .form button:hover {
-            background-color: #333;
-        }
-
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background: #000;
-            border: 1px solid #333;
-            border-radius: 4px;
-            color: #fff;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .decrypt-panel .form input, .decrypt-panel .form textarea, .decrypt-panel .result {
-            background-color: #fff;
-            color: #000;
-        }
-
-        .toggle-button {
-            margin-top: 40px;
-            background-color: #000;
-            color: #fff;
-            border: none;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .toggle-button:hover {
-            background-color: #333;
+            gap: 15px;
         }
 
         .inputGroup {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 1em 0 1em 0;
-            max-width: 300px;
             position: relative;
+            margin: 1em 0;
         }
 
         .inputGroup textarea {
-            font-size: 150%;
-            padding: 0.8em;
-            outline: none;
-            border: 3px solid rgb(200, 200, 200);
-            background-color: transparent;
-            border-radius: 20px;
             width: 100%;
             height: 100px;
-            color: rgb(0, 0, 0);
+            padding: 0.8em;
+            font-size: 16px;
+            border: 3px solid #ccc;
+            border-radius: 20px;
+            background: transparent;
+            color: #fff;
+            resize: none;
         }
 
         .inputGroup label {
-            font-size: 100%;
             position: absolute;
-            left: 0;
-            padding: 0.5em;
-            margin-left: 1.8em;
+            left: 1.8em;
+            top: 0.8em;
+            color: #fff;
             pointer-events: none;
             transition: all 0.3s ease;
-            color: rgb(255, 255, 255);
         }
 
-        .inputGroup :is(textarea:focus, textarea:valid)~label {
-            transform: translateY(-90%) scale(.9);
-            margin: 0em;
-            margin-left: 1.5em;
+        .inputGroup textarea:focus ~ label,
+        .inputGroup textarea:valid ~ label {
+            transform: translateY(-130%) scale(0.9);
+            background: #ff1c3b;
             padding: 0.4em;
-            background-color: #ee8e8;
+            border-radius: 10px;
         }
 
-        .inputGroup :is(textarea:focus, textarea:valid) {
-            border-color: rgb(0, 0, 0);
+        /* UI Button Stili */
+        .ui-btn {
+            --btn-default-bg: #010314;
+            --btn-padding: 15px 20px;
+            --btn-hover-bg: rgb(51, 51, 51);
+            --btn-transition: .3s;
+            --btn-letter-spacing: .1rem;
+            --btn-animation-duration: 1.2s;
+            --btn-shadow-color: rgba(0, 0, 0, 0.137);
+            --btn-shadow: 0 2px 10px 0 var(--btn-shadow-color);
+            --hover-btn-color: #7241FF;
+            --default-btn-color: #fff;
+            --font-size: 16px;
+            --font-weight: 600;
+            --font-family: Menlo,Roboto Mono,monospace;
+
+            box-sizing: border-box;
+            padding: var(--btn-padding);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--default-btn-color);
+            font: var(--font-weight) var(--font-size) var(--font-family);
+            background: var(--btn-default-bg);
+            border: none;
+            cursor: pointer;
+            transition: var(--btn-transition);
+            overflow: hidden;
+            box-shadow: var(--btn-shadow);
+            border-radius: 10px;
+            border: 2px solid #2A2B3A;
+            margin: 10px 0;
+            width: 100%;
         }
 
+        .ui-btn span {
+            letter-spacing: var(--btn-letter-spacing);
+            transition: var(--btn-transition);
+            box-sizing: border-box;
+            position: relative;
+            background: inherit;
+        }
+
+        .ui-btn span::before {
+            box-sizing: border-box;
+            position: absolute;
+            content: "";
+            background: inherit;
+        }
+
+        .ui-btn:hover,
+        .ui-btn:focus {
+            background: var(--btn-default-bg);
+            box-shadow: 0px 0px 10px 0px rgba(119, 68, 255, 0.70);
+            border: 2px solid #7241FF;
+        }
+
+        .ui-btn:hover span,
+        .ui-btn:focus span {
+            color: var(--hover-btn-color);
+        }
+
+        .ui-btn:hover span::before,
+        .ui-btn:focus span::before {
+            animation: chitchat linear both var(--btn-animation-duration);
+        }
+
+        /* Deşifreleme butonu için yeşil glow efekti */
+        .decrypt-btn {
+            --btn-shadow-color: rgba(0, 255, 0, 0.3) !important;
+            --hover-btn-color: #00ff00 !important;
+        }
+
+        .decrypt-btn:hover,
+        .decrypt-btn:focus {
+            box-shadow: 0px 0px 20px 5px rgba(0, 255, 0, 0.5) !important;
+            border: 2px solid #00ff00 !important;
+        }
+
+        .decrypt-btn:hover span,
+        .decrypt-btn:focus span {
+            color: #00ff00 !important;
+        }
+
+        /* Animated Button Styles */
         .animated-button {
             position: relative;
             display: flex;
@@ -280,10 +282,93 @@
             height: 220px;
             opacity: 1;
         }
+
+        /* Result Alanları */
+        .result {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #000;
+            color: #fff;
+            border-radius: 10px;
+            word-break: break-all;
+        }
+
+        .decrypt-panel .result {
+            background: #f5f5f5;
+            color: #000;
+            border: 1px solid #ddd;
+        }
+
+        /* Input Alanları */
+        .form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .decrypt-panel input {
+            background: #fff;
+            color: #000;
+        }
+
+        /* Animasyon */
+        @keyframes chitchat {
+            0% { content: "#"; }
+            5% { content: "."; }
+            10% { content: "^{"; }
+            15% { content: "-!"; }
+            20% { content: "#$_"; }
+            25% { content: "№:0"; }
+            30% { content: "#{+."; }
+            35% { content: "@}-?"; }
+            40% { content: "?{4@%"; }
+            45% { content: "=.,^!"; }
+            50% { content: "?2@%"; }
+            55% { content: "\\;1}]"; }
+            60% { content: "?{%:%"; right: 0; }
+            65% { content: "|{f[4"; right: 0; }
+            70% { content: "{4%0%"; right: 0; }
+            75% { content: "'1_0<"; right: 0; }
+            80% { content: "{0%"; right: 0; }
+            85% { content: "]>'"; right: 0; }
+            90% { content: "4"; right: 0; }
+            95% { content: "2"; right: 0; }
+            100% { content: ""; right: 0; }
+        }
+
+        /* Responsive Tasarım */
+        @media (max-width: 850px) {
+            .container {
+                width: 90%;
+                height: 80vh;
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                height: 100vh;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .form {
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container" id="container">
+        <!-- Şifreleme Paneli -->
         <div class="panel encrypt-panel">
             <h1>Şifreleme</h1>
             <form class="form">
@@ -291,12 +376,10 @@
                     <textarea id="inputText" placeholder="" required="" autocomplete="off"></textarea>
                     <label for="inputText">Şifrelenecek metin</label>
                 </div>
-                <button type="button" class="animated-button" onclick="sifrele()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Şifrele
+                <button type="button" class="ui-btn" onclick="sifrele()">
+                    <span>
+                        Şifrele
+                    </span>
                 </button>
                 <div class="result" id="encryptedResult"></div>
                 <div class="result" id="keyResult"></div>
@@ -312,144 +395,164 @@
                 </svg>
             </button>
         </div>
+
+        <!-- Deşifreleme Paneli -->
         <div class="panel decrypt-panel">
             <h1>Deşifreleme</h1>
             <p>Deşifrelenecek metni girin</p>
             <form class="form">
                 <input type="text" id="encryptedInput" placeholder="Şifrelenmiş metni buraya yazın">
                 <input type="text" id="keyInput" placeholder="Bölüm anahtar sayılarını buraya yazın">
-                <button type="button" class="animated-button" onclick="desifrele()">Deşifrele</button>
+                <button type="button" class="ui-btn decrypt-btn" onclick="desifrele()">
+                    <span>
+                        Deşifrele
+                    </span>
+                </button>
                 <div class="result" id="decryptedResult"></div>
             </form>
             <button class="animated-button" onclick="togglePanel()" style="margin-top: 40px;">
                 <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                    <path d="M7.8284 10.9999L13.1924 5.63589L11.7782 4.22168L4 11.9999L11.7782 19.778L13.1924 18.3638L7.8284 12.9999H20V10.9999H7.8284Z"></path>
                 </svg>
                 <span class="text">Şifreleme</span>
                 <span class="circle"></span>
                 <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
-                </svg>
-            </button>
-        </div>
-    </div>
-    <script>
-        const container = document.getElementById('container');
+                    <path d="M7.8284 10.9999L13.1924 5.63589L11.7782 4.22168L4 11.9999L11.7782 19.778L
+                        const container = document.getElementById('container');
 
-        function togglePanel() {
-            container.classList.toggle('animate');
-        }
+function togglePanel() {
+    container.classList.toggle('animate');
+}
 
-        const keithAlfabesi = {
-            'A': [14,3], 'B':[19,2], 'C':[28,3], 'D':[47,4], 'E':[61,6], 
-            'F':[75,5], 'G':[122,6], 'H':[149,3], 'I':[183,6], 'J':[199,2],
-            'K':[244,6], 'L':[298,3], 'M':[305,6], 'N':[323,6], 'O':[366,6],
-            'P':[427,6], 'Q':[488,6], 'R':[497,4], 'S':[549,6], 'T':[646,6],
-            'U':[795,5], 'V':[911,9], 'W':[969,6], 'X':[1292,6], 'Y':[1301,11],
-            'Z':[1499,3]
-        };
+const keithAlfabesi = {
+    'A': [14,3], 'B':[19,2], 'C':[28,3], 'D':[47,4], 'E':[61,6], 
+    'F':[75,5], 'G':[122,6], 'H':[149,3], 'I':[183,6], 'J':[199,2],
+    'K':[244,6], 'L':[298,3], 'M':[305,6], 'N':[323,6], 'O':[366,6],
+    'P':[427,6], 'Q':[488,6], 'R':[497,4], 'S':[549,6], 'T':[646,6],
+    'U':[795,5], 'V':[911,9], 'W':[969,6], 'X':[1292,6], 'Y':[1301,11],
+    'Z':[1499,3]
+};
 
-        function lookAndSay(sayi, adim) {
-            let current = BigInt(sayi);
-            for(let i=0; i<adim; i++){
-                let str = current.toString();
-                let result = "";
-                let count = 1;
-                for(let j=0; j<str.length; j++){
-                    if(str[j] === str[j+1]) count++;
-                    else {
-                        result += count + str[j];
-                        count = 1;
-                    }
-                }
-                current = BigInt(result);
+// Look-and-Say fonksiyonu
+function lookAndSay(sayi, adim) {
+    let current = BigInt(sayi);
+    for(let i=0; i<adim; i++){
+        let str = current.toString();
+        let result = "";
+        let count = 1;
+        for(let j=0; j<str.length; j++){
+            if(str[j] === str[j+1]) count++;
+            else {
+                result += count + str[j];
+                count = 1;
             }
-            return current.toString();
+        }
+        current = BigInt(result);
+    }
+    return current.toString();
+}
+
+// Mod 26 ve harf dönüşümü
+function modVeHarf(sayi) {
+    const mod = BigInt(sayi) % 26n;
+    return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
+}
+
+// Şifreleme fonksiyonu
+function sifrele() {
+    const input = document.getElementById('inputText').value.toUpperCase();
+    let encrypted = "";
+    let keys = [];
+    const repeatMap = {};
+
+    for(const char of input) {
+        if(keithAlfabesi[char]) {
+            repeatMap[char] = (repeatMap[char] || 0) + 1;
+            const [base, steps] = keithAlfabesi[char];
+            const totalSteps = steps + (repeatMap[char] - 1);
+            const processed = lookAndSay(base, totalSteps);
+            encrypted += modVeHarf(processed);
+            keys.push((BigInt(processed)/26n).toString());
+        } else {
+            encrypted += char;
+            keys.push("0");
+        }
+    }
+
+    document.getElementById('encryptedResult').textContent = `Şifrelenmiş Metin: ${encrypted}`;
+    document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
+}
+
+// Ters Conway fonksiyonu
+function tersConway(sayi) {
+    let str = sayi.toString();
+    if(str.length % 2 !== 0) str = "0" + str;
+    let result = "";
+    for(let i=0; i<str.length; i+=2) {
+        const count = parseInt(str[i]) || 1;
+        const digit = str[i+1] || '0';
+        result += digit.repeat(Math.max(1, count));
+    }
+    return result;
+}
+
+// Deşifreleme fonksiyonu
+function desifrele() {
+    const encrypted = document.getElementById('encryptedInput').value.toUpperCase();
+    const keys = document.getElementById('keyInput').value.split(',').map(k => k.trim());
+    let decrypted = "";
+
+    for(let i=0; i<encrypted.length; i++) {
+        const char = encrypted[i];
+        if(!/[A-Z]/.test(char)) {
+            decrypted += char;
+            continue;
         }
 
-        function modVeHarf(sayi) {
-            const mod = BigInt(sayi) % 26n;
-            return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
-        }
+        const kalan = BigInt(char === 'Z' ? 0 : char.charCodeAt(0) - 64);
+        const bolunen = BigInt(keys[i] || 0) * 26n + kalan;
+        let currentValue = bolunen.toString();
+        
+        let foundChar = char;
+        let matchFound = false;
 
-        function sifrele() {
-            const input = document.getElementById('inputText').value.toUpperCase();
-            let encrypted = "";
-            let keys = [];
-            const repeatMap = {};
+        for(let step=0; step<100; step++) {
+            const fibParEntry = Object.entries(keithAlfabesi).find(([_, [val]]) => 
+                parseInt(currentValue) === val
+            );
 
-            for(const char of input) {
-                if(keithAlfabesi[char]) {
-                    repeatMap[char] = (repeatMap[char] || 0) + 1;
-                    const [base, steps] = keithAlfabesi[char];
-                    const totalSteps = steps + (repeatMap[char] - 1);
-                    const processed = lookAndSay(base, totalSteps);
-                    encrypted += modVeHarf(processed);
-                    keys.push((BigInt(processed)/26n).toString());
-                } else {
-                    encrypted += char;
-                    keys.push("0");
-                }
-            }
-
-            document.getElementById('encryptedResult').textContent = `Şifrelenmiş Metin: ${encrypted}`;
-            document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
-        }
-
-        function tersConway(sayi) {
-            let str = sayi.toString();
-            if(str.length % 2 !== 0) str = "0" + str;
-            let result = "";
-            for(let i=0; i<str.length; i+=2) {
-                const count = parseInt(str[i]) || 1;
-                const digit = str[i+1] || '0';
-                result += digit.repeat(Math.max(1, count));
-            }
-            return result;
-        }
-
-        function desifrele() {
-            const encrypted = document.getElementById('encryptedInput').value.toUpperCase();
-            const keys = document.getElementById('keyInput').value.split(',').map(k => k.trim());
-            let decrypted = "";
-
-            for(let i=0; i<encrypted.length; i++) {
-                const char = encrypted[i];
-                if(!/[A-Z]/.test(char)) {
-                    decrypted += char;
-                    continue;
-                }
-
-                const kalan = BigInt(char === 'Z' ? 0 : char.charCodeAt(0) - 64);
-                const bolunen = BigInt(keys[i] || 0) * 26n + kalan;
-                let currentValue = bolunen.toString();
-                
-                let foundChar = char;
-                let matchFound = false;
-
-                for(let step=0; step<100; step++) {
-                    const fibParEntry = Object.entries(keithAlfabesi).find(([_, [val]]) => 
-                        parseInt(currentValue) === val
-                    );
-
-                    if(fibParEntry) {
-                        foundChar = fibParEntry[0];
-                        matchFound = true;
-                        break;
-                    }
-
-                    if(currentValue.length < 2) break;
-                    const newValue = tersConway(currentValue);
-                    if(newValue === currentValue) break;
-                    currentValue = newValue;
-                }
-
-                decrypted += matchFound ? foundChar : char;
+            if(fibParEntry) {
+                foundChar = fibParEntry[0];
+                matchFound = true;
+                break;
             }
 
-            document.getElementById('decryptedResult').textContent = `Deşifrelenmiş Metin: ${decrypted}`;
+            if(currentValue.length < 2) break;
+            const newValue = tersConway(currentValue);
+            if(newValue === currentValue) break;
+            currentValue = newValue;
         }
-    </script>
-</body>
-</html>
 
+        decrypted += matchFound ? foundChar : char;
+    }
+
+    document.getElementById('decryptedResult').textContent = `Deşifrelenmiş Metin: ${decrypted}`;
+}
+
+// Chitchat animasyonu için tüm butonları seç
+document.querySelectorAll('.ui-btn').forEach(button => {
+    button.addEventListener('mouseenter', function() {
+        const span = this.querySelector('span');
+        if(span) {
+            span.style.animation = 'chitchat linear both var(--btn-animation-duration)';
+        }
+    });
+    
+    button.addEventListener('mouseleave', function() {
+        const span = this.querySelector('span');
+        if(span) {
+            span.style.animation = 'none';
+            void span.offsetWidth; // Trigger reflow
+        }
+    });
+});
