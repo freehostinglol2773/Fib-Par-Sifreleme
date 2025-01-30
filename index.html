@@ -110,70 +110,6 @@
             border-radius: 10px;
         }
 
-        /* Result Stilleri */
-        .result-container {
-            width: 100%;
-            margin: 10px 0;
-            font-size: 16px;
-        }
-
-        .result-button {
-            margin: 0;
-            height: auto;
-            background: transparent;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            font-size: 16px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .result-button .actual-text {
-            color: inherit;
-            position: relative;
-            z-index: 1;
-        }
-
-        .result-button .hover-text {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            color: #37FF8B;
-            background: rgba(55, 255, 139, 0.1);
-            transition: width 0.5s ease;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        .result-button:hover .hover-text {
-            width: 100%;
-        }
-
-        .encrypt-panel .result-button {
-            color: white;
-        }
-
-        .decrypt-panel .result-button {
-            color: black;
-        }
-
-        /* Key Result */
-        #keyResult {
-            color: inherit;
-            font-size: 16px;
-            margin: 10px 0;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            width: 100%;
-            word-break: break-all;
-        }
-
         /* UI Button Stili */
         .ui-btn {
             --btn-default-bg: #010314;
@@ -234,6 +170,11 @@
         .ui-btn:hover span,
         .ui-btn:focus span {
             color: var(--hover-btn-color);
+        }
+
+        .ui-btn:hover span::before,
+        .ui-btn:focus span::before {
+            animation: chitchat linear both var(--btn-animation-duration);
         }
 
         /* Deşifreleme butonu için yeşil glow efekti */
@@ -342,6 +283,23 @@
             opacity: 1;
         }
 
+        /* Result Alanları */
+        .result {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #000;
+            color: #fff;
+            border-radius: 10px;
+            word-break: break-all;
+        }
+
+        .decrypt-panel .result {
+            background: #f5f5f5;
+            color: #000;
+            border: 1px solid #ddd;
+        }
+
         /* Input Alanları */
         .form input {
             width: 100%;
@@ -355,6 +313,31 @@
         .decrypt-panel input {
             background: #fff;
             color: #000;
+        }
+
+        /* Animasyon */
+        @keyframes chitchat {
+            0% { content: "#"; }
+            5% { content: "."; }
+            10% { content: "^{"; }
+            15% { content: "-!"; }
+            20% { content: "#$_"; }
+            25% { content: "№:0"; }
+            30% { content: "#{+."; }
+            35% { content: "@}-?"; }
+            40% { content: "?{4@%"; }
+            45% { content: "=.,^!"; }
+            50% { content: "?2@%"; }
+            55% { content: "\\;1}]"; }
+            60% { content: "?{%:%"; right: 0; }
+            65% { content: "|{f[4"; right: 0; }
+            70% { content: "{4%0%"; right: 0; }
+            75% { content: "'1_0<"; right: 0; }
+            80% { content: "{0%"; right: 0; }
+            85% { content: "]>'"; right: 0; }
+            90% { content: "4"; right: 0; }
+            95% { content: "2"; right: 0; }
+            100% { content: ""; right: 0; }
         }
 
         /* Responsive Tasarım */
@@ -398,13 +381,8 @@
                         Şifrele
                     </span>
                 </button>
-                <div class="result-container">
-                    <div class="result-button">
-                        <span class="actual-text" id="encryptedResult">Şifrelenmiş metin burada görünecek</span>
-                        <span class="hover-text"></span>
-                    </div>
-                </div>
-                <div id="keyResult">Anahtar sayılar burada görünecek</div>
+                <div class="result" id="encryptedResult"></div>
+                <div class="result" id="keyResult"></div>
             </form>
             <button class="animated-button" onclick="togglePanel()" style="margin-top: 40px;">
                 <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
@@ -430,12 +408,7 @@
                         Deşifrele
                     </span>
                 </button>
-                <div class="result-container">
-                    <div class="result-button">
-                        <span class="actual-text" id="decryptedResult">Deşifrelenmiş metin burada görünecek</span>
-                        <span class="hover-text"></span>
-                    </div>
-                </div>
+                <div class="result" id="decryptedResult"></div>
             </form>
             <button class="animated-button" onclick="togglePanel()" style="margin-top: 40px;">
                 <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
@@ -509,12 +482,8 @@
                 }
             }
 
-            document.getElementById('encryptedResult').textContent = encrypted;
+            document.getElementById('encryptedResult').textContent = `Şifrelenmiş Metin: ${encrypted}`;
             document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
-            
-            // Hover text'i güncelle
-            const hoverText = document.querySelector('.encrypt-panel .hover-text');
-            hoverText.textContent = encrypted;
         }
 
         function tersConway(sayi) {
@@ -568,11 +537,7 @@
                 decrypted += matchFound ? foundChar : char;
             }
 
-            document.getElementById('decryptedResult').textContent = decrypted;
-            
-            // Hover text'i güncelle
-            const hoverText = document.querySelector('.decrypt-panel .hover-text');
-            hoverText.textContent = decrypted;
+            document.getElementById('decryptedResult').textContent = `Deşifrelenmiş Metin: ${decrypted}`;
         }
     </script>
 </body>
