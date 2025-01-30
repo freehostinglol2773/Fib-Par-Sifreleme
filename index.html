@@ -67,6 +67,62 @@
             transform: translateX(0);
         }
 
+        /* Yeni eklenen buton stilleri */
+        .button {
+            margin: 0;
+            height: auto;
+            background: transparent;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button {
+            --border-right: 6px;
+            --text-stroke-color: rgba(255,255,255,0.6);
+            --animation-color: #37FF8B;
+            --fs-size: 2em;
+            letter-spacing: 3px;
+            text-decoration: none;
+            font-size: var(--fs-size);
+            font-family: "Arial";
+            position: relative;
+            text-transform: uppercase;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-stroke-color);
+        }
+
+        .hover-text {
+            position: absolute;
+            box-sizing: border-box;
+            content: attr(data-text);
+            color: var(--animation-color);
+            width: 0%;
+            inset: 0;
+            border-right: var(--border-right) solid var(--animation-color);
+            overflow: hidden;
+            transition: 0.5s;
+            -webkit-text-stroke: 1px var(--animation-color);
+        }
+
+        .button:hover .hover-text {
+            width: 100%;
+            filter: drop-shadow(0 0 23px var(--animation-color))
+        }
+
+        /* Şifreleme paneli için özel stiller */
+        .encrypt-panel .button {
+            --animation-color: #ff1c3b;
+            margin: 20px 0;
+        }
+
+        /* Deşifreleme paneli için özel stiller */
+        .decrypt-panel .button {
+            --text-stroke-color: rgba(0,0,0,0.6);
+            --animation-color: #00ff00;
+            margin: 20px 0;
+        }
+
         /* Form Elemanları */
         .form {
             width: 100%;
@@ -284,35 +340,9 @@
         }
 
         /* Result Alanları */
-        .result {
+        .result-container {
             width: 100%;
-            padding: 15px;
             margin: 10px 0;
-            background: #000;
-            color: #fff;
-            border-radius: 10px;
-            word-break: break-all;
-        }
-
-        .decrypt-panel .result {
-            background: #f5f5f5;
-            color: #000;
-            border: 1px solid #ddd;
-        }
-
-        /* Input Alanları */
-        .form input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-        }
-
-        .decrypt-panel input {
-            background: #fff;
-            color: #000;
         }
 
         /* Animasyon */
@@ -381,8 +411,18 @@
                         Şifrele
                     </span>
                 </button>
-                <div class="result" id="encryptedResult"></div>
-                <div class="result" id="keyResult"></div>
+                <div class="result-container">
+                    <button class="button" data-text="Şifreli Metin">
+                        <span class="actual-text" id="encryptedResult">&nbsp;Şifreli Metin&nbsp;</span>
+                        <span aria-hidden="true" class="hover-text" id="encryptedHover">&nbsp;Şifreli Metin&nbsp;</span>
+                    </button>
+                </div>
+                <div class="result-container">
+                    <button class="button" data-text="Anahtar">
+                        <span class="actual-text" id="keyResult">&nbsp;Anahtar&nbsp;</span>
+                        <span aria-hidden="true" class="hover-text" id="keyHover">&nbsp;Anahtar&nbsp;</span>
+                    </button>
+                </div>
             </form>
             <button class="animated-button" onclick="togglePanel()" style="margin-top: 40px;">
                 <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
@@ -408,7 +448,12 @@
                         Deşifrele
                     </span>
                 </button>
-                <div class="result" id="decryptedResult"></div>
+                <div class="result-container">
+                    <button class="button" data-text="Çözülmüş Metin">
+                        <span class="actual-text" id="decryptedResult">&nbsp;Çözülmüş Metin&nbsp;</span>
+                        <span aria-hidden="true" class="hover-text" id="decryptedHover">&nbsp;Çözülmüş Metin&nbsp;</span>
+                    </button>
+                </div>
             </form>
             <button class="animated-button" onclick="togglePanel()" style="margin-top: 40px;">
                 <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
@@ -462,6 +507,14 @@
             return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
         }
 
+        function updateButtons(elementId, text) {
+            const actualText = document.getElementById(elementId);
+            const hoverText = document.getElementById(elementId + 'Hover');
+            const content = `&nbsp;${text}&nbsp;`;
+            actualText.innerHTML = content;
+            hoverText.innerHTML = content;
+        }
+
         function sifrele() {
             const input = document.getElementById('inputText').value.toUpperCase();
             let encrypted = "";
@@ -482,8 +535,8 @@
                 }
             }
 
-            document.getElementById('encryptedResult').textContent = `Şifrelenmiş Metin: ${encrypted}`;
-            document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
+            updateButtons('encryptedResult', encrypted);
+            updateButtons('keyResult', keys.join(", "));
         }
 
         function tersConway(sayi) {
@@ -537,7 +590,7 @@
                 decrypted += matchFound ? foundChar : char;
             }
 
-            document.getElementById('decryptedResult').textContent = `Deşifrelenmiş Metin: ${decrypted}`;
+            updateButtons('decryptedResult', decrypted);
         }
     </script>
 </body>
