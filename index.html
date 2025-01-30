@@ -346,15 +346,6 @@
             100% { content: ""; right: 0; }
         }
 
-        /* Dalgalı Çizgi Animasyonu */
-        @keyframes wave {
-            0% { transform: translateY(0); }
-            25% { transform: translateY(-5px); }
-            50% { transform: translateY(0); }
-            75% { transform: translateY(5px); }
-            100% { transform: translateY(0); }
-        }
-
         /* Responsive Tasarım */
         @media (max-width: 850px) {
             .container {
@@ -453,17 +444,6 @@
         .inputbox input:focus ~ i {
             height: 44px;
         }
-
-        /* Dalgalı Çizgi */
-        .wave-line {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: #000;
-            top: 50%;
-            left: 0;
-            animation: wave 1s infinite;
-        }
     </style>
 </head>
 <body>
@@ -492,7 +472,6 @@
                     <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
                 </svg>
             </button>
-            <div class="wave-line"></div>
         </div>
         <!-- Deşifreleme Paneli -->
         <div class="panel decrypt-panel">
@@ -519,7 +498,6 @@
                     <path d="M7.8284 10.9999L13.1924 5.63589L11.7782 4.22168L4 11.9999L11.7782 19.778L13.1924 18.3638L7.8284 12.9999H20V10.9999H7.8284Z"></path>
                 </svg>
             </button>
-            <div class="wave-line"></div>
         </div>
     </div>
 
@@ -527,14 +505,7 @@
         const container = document.getElementById('container');
 
         function togglePanel() {
-            const waveLine = document.querySelector('.wave-line');
-            waveLine.style.display = 'block';
-            waveLine.style.animation = 'wave 0.6s ease-in-out';
-
-            setTimeout(() => {
-                container.classList.toggle('animate');
-                waveLine.style.display = 'none';
-            }, 600);
+            container.classList.toggle('animate');
         }
 
         const keithAlfabesi = {
