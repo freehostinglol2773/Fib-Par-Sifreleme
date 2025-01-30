@@ -67,62 +67,6 @@
             transform: translateX(0);
         }
 
-        /* Yeni eklenen buton stilleri */
-        .button {
-            margin: 0;
-            height: auto;
-            background: transparent;
-            padding: 0;
-            border: none;
-            cursor: pointer;
-        }
-
-        .button {
-            --border-right: 6px;
-            --text-stroke-color: rgba(255,255,255,0.6);
-            --animation-color: #37FF8B;
-            --fs-size: 2em;
-            letter-spacing: 3px;
-            text-decoration: none;
-            font-size: var(--fs-size);
-            font-family: "Arial";
-            position: relative;
-            text-transform: uppercase;
-            color: transparent;
-            -webkit-text-stroke: 1px var(--text-stroke-color);
-        }
-
-        .hover-text {
-            position: absolute;
-            box-sizing: border-box;
-            content: attr(data-text);
-            color: var(--animation-color);
-            width: 0%;
-            inset: 0;
-            border-right: var(--border-right) solid var(--animation-color);
-            overflow: hidden;
-            transition: 0.5s;
-            -webkit-text-stroke: 1px var(--animation-color);
-        }
-
-        .button:hover .hover-text {
-            width: 100%;
-            filter: drop-shadow(0 0 23px var(--animation-color))
-        }
-
-        /* Şifreleme paneli için özel stiller */
-        .encrypt-panel .button {
-            --animation-color: #ff1c3b;
-            margin: 20px 0;
-        }
-
-        /* Deşifreleme paneli için özel stiller */
-        .decrypt-panel .button {
-            --text-stroke-color: rgba(0,0,0,0.6);
-            --animation-color: #00ff00;
-            margin: 20px 0;
-        }
-
         /* Form Elemanları */
         .form {
             width: 100%;
@@ -164,6 +108,70 @@
             background: #ff1c3b;
             padding: 0.4em;
             border-radius: 10px;
+        }
+
+        /* Result Stilleri */
+        .result-container {
+            width: 100%;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .result-button {
+            margin: 0;
+            height: auto;
+            background: transparent;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-button .actual-text {
+            color: inherit;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-button .hover-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            color: #37FF8B;
+            background: rgba(55, 255, 139, 0.1);
+            transition: width 0.5s ease;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .result-button:hover .hover-text {
+            width: 100%;
+        }
+
+        .encrypt-panel .result-button {
+            color: white;
+        }
+
+        .decrypt-panel .result-button {
+            color: black;
+        }
+
+        /* Key Result */
+        #keyResult {
+            color: inherit;
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: 100%;
+            word-break: break-all;
         }
 
         /* UI Button Stili */
@@ -226,11 +234,6 @@
         .ui-btn:hover span,
         .ui-btn:focus span {
             color: var(--hover-btn-color);
-        }
-
-        .ui-btn:hover span::before,
-        .ui-btn:focus span::before {
-            animation: chitchat linear both var(--btn-animation-duration);
         }
 
         /* Deşifreleme butonu için yeşil glow efekti */
@@ -339,35 +342,19 @@
             opacity: 1;
         }
 
-        /* Result Alanları */
-        .result-container {
+        /* Input Alanları */
+        .form input {
             width: 100%;
-            margin: 10px 0;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
         }
 
-        /* Animasyon */
-        @keyframes chitchat {
-            0% { content: "#"; }
-            5% { content: "."; }
-            10% { content: "^{"; }
-            15% { content: "-!"; }
-            20% { content: "#$_"; }
-            25% { content: "№:0"; }
-            30% { content: "#{+."; }
-            35% { content: "@}-?"; }
-            40% { content: "?{4@%"; }
-            45% { content: "=.,^!"; }
-            50% { content: "?2@%"; }
-            55% { content: "\\;1}]"; }
-            60% { content: "?{%:%"; right: 0; }
-            65% { content: "|{f[4"; right: 0; }
-            70% { content: "{4%0%"; right: 0; }
-            75% { content: "'1_0<"; right: 0; }
-            80% { content: "{0%"; right: 0; }
-            85% { content: "]>'"; right: 0; }
-            90% { content: "4"; right: 0; }
-            95% { content: "2"; right: 0; }
-            100% { content: ""; right: 0; }
+        .decrypt-panel input {
+            background: #fff;
+            color: #000;
         }
 
         /* Responsive Tasarım */
@@ -412,17 +399,12 @@
                     </span>
                 </button>
                 <div class="result-container">
-                    <button class="button" data-text="Şifreli Metin">
-                        <span class="actual-text" id="encryptedResult">&nbsp;Şifreli Metin&nbsp;</span>
-                        <span aria-hidden="true" class="hover-text" id="encryptedHover">&nbsp;Şifreli Metin&nbsp;</span>
-                    </button>
+                    <div class="result-button">
+                        <span class="actual-text" id="encryptedResult">Şifrelenmiş metin burada görünecek</span>
+                        <span class="hover-text"></span>
+                    </div>
                 </div>
-                <div class="result-container">
-                    <button class="button" data-text="Anahtar">
-                        <span class="actual-text" id="keyResult">&nbsp;Anahtar&nbsp;</span>
-                        <span aria-hidden="true" class="hover-text" id="keyHover">&nbsp;Anahtar&nbsp;</span>
-                    </button>
-                </div>
+                <div id="keyResult">Anahtar sayılar burada görünecek</div>
             </form>
             <button class="animated-button" onclick="togglePanel()" style="margin-top: 40px;">
                 <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
@@ -449,10 +431,10 @@
                     </span>
                 </button>
                 <div class="result-container">
-                    <button class="button" data-text="Çözülmüş Metin">
-                        <span class="actual-text" id="decryptedResult">&nbsp;Çözülmüş Metin&nbsp;</span>
-                        <span aria-hidden="true" class="hover-text" id="decryptedHover">&nbsp;Çözülmüş Metin&nbsp;</span>
-                    </button>
+                    <div class="result-button">
+                        <span class="actual-text" id="decryptedResult">Deşifrelenmiş metin burada görünecek</span>
+                        <span class="hover-text"></span>
+                    </div>
                 </div>
             </form>
             <button class="animated-button" onclick="togglePanel()" style="margin-top: 40px;">
@@ -507,14 +489,6 @@
             return mod === 0n ? 'Z' : String.fromCharCode(64 + Number(mod));
         }
 
-        function updateButtons(elementId, text) {
-            const actualText = document.getElementById(elementId);
-            const hoverText = document.getElementById(elementId + 'Hover');
-            const content = `&nbsp;${text}&nbsp;`;
-            actualText.innerHTML = content;
-            hoverText.innerHTML = content;
-        }
-
         function sifrele() {
             const input = document.getElementById('inputText').value.toUpperCase();
             let encrypted = "";
@@ -535,8 +509,12 @@
                 }
             }
 
-            updateButtons('encryptedResult', encrypted);
-            updateButtons('keyResult', keys.join(", "));
+            document.getElementById('encryptedResult').textContent = encrypted;
+            document.getElementById('keyResult').textContent = `Anahtar Sayılar: ${keys.join(", ")}`;
+            
+            // Hover text'i güncelle
+            const hoverText = document.querySelector('.encrypt-panel .hover-text');
+            hoverText.textContent = encrypted;
         }
 
         function tersConway(sayi) {
@@ -590,7 +568,11 @@
                 decrypted += matchFound ? foundChar : char;
             }
 
-            updateButtons('decryptedResult', decrypted);
+            document.getElementById('decryptedResult').textContent = decrypted;
+            
+            // Hover text'i güncelle
+            const hoverText = document.querySelector('.decrypt-panel .hover-text');
+            hoverText.textContent = decrypted;
         }
     </script>
 </body>
